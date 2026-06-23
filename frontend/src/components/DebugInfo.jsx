@@ -17,7 +17,7 @@ export default function DebugInfo() {
     // Test backend health
     const testBackend = async () => {
       try {
-        const response = await fetch('https://litein-municipal.onrender.com/health');
+        const response = await fetch('https://litein-municipal-board-production.up.railway.app/health');
         const data = await response.json();
         setBackendStatus(`✅ Backend OK - ${data.status}`);
       } catch (error) {
@@ -27,7 +27,7 @@ export default function DebugInfo() {
 
     // Test news API
     const testNews = async () => {
-      const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal-board-production.up.railway.app';
       try {
         const response = await fetch(`${API_URL}/api/news?limit=3`);
         const data = await response.json();

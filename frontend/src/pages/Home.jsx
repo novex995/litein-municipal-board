@@ -20,7 +20,14 @@ useEffect(() => {
   const fetchNews = async () => {
     try {
       // Clean up variable fallbacks
-      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com';
+      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal-board-production.up.railway.app';
+      
+      // Debug logging
+      console.log('🔍 Environment Check:', {
+        VITE_API_URL: import.meta.env.VITE_API_URL,
+        API_URL: API_URL,
+        fullURL: `${API_URL}/api/news?limit=3`
+      });
       
       // Ensure no trailing slash exists at the end of the base URL string
       if (API_URL.endsWith('/')) {
@@ -28,12 +35,18 @@ useEffect(() => {
       }
       
       const response = await fetch(`${API_URL}/api/news?limit=3`);
+      
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response headers:', response.headers);
+      
       const data = await response.json();
+      console.log('✅ Data received:', data);
+      
       if (data.success) {
         setNews(data.data);
       }
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error('❌ Error fetching news:', error);
     } finally {
       setNewsLoading(false);
     }
@@ -47,7 +60,7 @@ const handleNewsletterSubmit = async (e) => {
 
     try {
       // 1. Sanitize the API URL base path identically to fetchNews
-      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com';
+      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal-board-production.up.railway.app';
       
       if (API_URL.endsWith('/')) {
         API_URL = API_URL.slice(0, -1);
