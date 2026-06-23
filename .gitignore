@@ -56,3 +56,5 @@ coverage/
 node_modules/
 .env
 frontend/.chrome-profile/
+node_modules/
+*/node_modules/
