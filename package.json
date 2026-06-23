@@ -1,0 +1,14 @@
+{
+  "name": "litein-municipal-board",
+  "version": "1.0.0",
+  "description": "Litein Municipal Board - Full Stack Application",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev"
+  },
+  "keywords": ["municipal", "kenya", "kericho"],
+  "author": "Litein Municipality",
+  "license": "MIT"
+}
