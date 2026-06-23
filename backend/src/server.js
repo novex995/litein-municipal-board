@@ -25,13 +25,42 @@ const PORT = process.env.PORT || 5000
 // Security middleware
 app.use(helmet())
 
-// CORS configuration
+// CORS configuration - Allow Cloudflare Pages and localhost
 app.use(cors({
-  origin: ['https://litein-municipal.pages.dev', 'http://localhost:5173'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, curl, etc)
+    if (!origin) return callback(null, true);
+    
+    // Allow any *.pages.dev domain (Cloudflare Pages)
+    if (origin.endsWith('.pages.dev')) {
+      return callback(null, true);
+    }
+    
+    // Allow localhost for development
+    if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+    
+    // Explicit allowed origins
+    const allowedOrigins = [
+      'https://litein-municipal.pages.dev',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    console.warn('❌ CORS rejected origin:', origin);
+    callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
-}))
+}));
+
+// Enable pre-flight requests for all routes
+app.options('*', cors());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -51,6 +80,12 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   app.use(morgan('combined'))
 }
+
+// Request logging for debugging CORS and API calls
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
+  next();
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
