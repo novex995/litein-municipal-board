@@ -43,6 +43,7 @@ app.use(cors({
     
     // Explicit allowed origins
     const allowedOrigins = [
+      'https://litein-municipal-board.pages.dev',
       'https://litein-municipal.pages.dev',
       process.env.FRONTEND_URL
     ].filter(Boolean);
