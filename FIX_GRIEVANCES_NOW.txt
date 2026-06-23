@@ -1,0 +1,40 @@
+╔════════════════════════════════════════════════════════════════════╗
+║  QUICK FIX: Admin Shows 0 Grievances (But 3 Exist in Database)    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+PROBLEM: Admin dashboard shows 0 grievances due to Row Level Security
+
+SOLUTION: Update RLS policies to allow admin access
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+STEP 1: Open Supabase Dashboard
+   1. Go to: https://supabase.com
+   2. Log in and select your project
+   3. Click "SQL Editor" in left sidebar
+
+STEP 2: Run the Fix Script
+   1. Open file: database/fix_complaints_rls_for_admin.sql
+   2. Copy ALL the SQL content
+   3. Paste into Supabase SQL Editor
+   4. Click "Run" button
+
+STEP 3: Verify It Works
+   1. Go back to your admin dashboard
+   2. Refresh the page (F5)
+   3. Navigate to Grievances section
+   4. ✅ Should now show: Total Grievances = 3
+   5. ✅ Should see all grievances listed in table
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT THIS DOES:
+   • Allows admin/staff to see ALL grievances
+   • Citizens can still only see their own submissions
+   • Maintains data security and privacy
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DETAILED DOCS: See GRIEVANCES_NOT_SHOWING_FIX.md for full explanation
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
