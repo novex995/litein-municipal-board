@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════
+  GITHUB TOKEN CREATION CHECKLIST
+═══════════════════════════════════════════════════════════
+
+URL: https://github.com/settings/tokens
+
+STEPS:
+------
+
+1. Click "Generate new token" → "Generate new token (classic)"
+
+2. Fill in:
+   Note: Litein Municipal Deployment
+   Expiration: 90 days
+
+3. SELECT THESE SCOPES (CHECK THE BOXES):
+   
+   ☑ repo ← CHECK THIS ONE! (Most important)
+     This will auto-check all sub-items:
+     ☑ repo:status
+     ☑ repo_deployment
+     ☑ public_repo
+     ☑ repo:invite
+     ☑ security_events
+   
+   ☐ admin:org (not needed)
+   ☐ admin:public_key (not needed)
+   ☐ admin:repo_hook (not needed)
+   ☐ admin:org_hook (not needed)
+   ☐ gist (not needed)
+   ☐ notifications (not needed)
+   ☐ user (not needed)
+   ☐ delete_repo (not needed)
+   ☐ write:discussion (not needed)
+   ☐ write:packages (not needed)
+   ☐ read:packages (not needed)
+   ☑ workflow ← OPTIONAL but recommended
+   ☐ write:gpg_key (not needed)
+   ☐ read:gpg_key (not needed)
+
+4. Click "Generate token" (green button at bottom)
+
+5. COPY THE TOKEN IMMEDIATELY!
+   It starts with: github_pat_... or ghp_...
+   
+   TOKEN: _______________________________________________
+
+6. Save this token somewhere safe (notepad, password manager)
+
+═══════════════════════════════════════════════════════════
+  AFTER GETTING THE NEW TOKEN
+═══════════════════════════════════════════════════════════
+
+Open Git Bash and run:
+
+cd "/c/Users/HP/Documents/LITEIN MUNICIPAL BOARD"
+
+git remote set-url origin https://novex995:YOUR_NEW_TOKEN@github.com/novex995/litein-municipal-board.git
+
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+
+Replace YOUR_NEW_TOKEN with the token you just copied.
+
+EXAMPLE:
+If your token is: github_pat_ABC123XYZ
+
+Then the command would be:
+git remote set-url origin https://novex995:github_pat_ABC123XYZ@github.com/novex995/litein-municipal-board.git
+
+═══════════════════════════════════════════════════════════
