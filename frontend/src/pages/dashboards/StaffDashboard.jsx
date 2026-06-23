@@ -28,7 +28,7 @@ const StaffDashboard = () => {
   const fetchDashboardStats = async () => {
     try {
       const token = localStorage.getItem('auth_token')
-      const response = await fetch('http://localhost:5000/api/dashboard/staff', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/staff`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

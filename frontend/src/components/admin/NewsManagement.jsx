@@ -62,7 +62,7 @@ const NewsManagement = () => {
       console.log('Fetching news with token:', token.substring(0, 20) + '...')
       
       // TEMPORARY: Use public endpoint for testing
-      const response = await fetch('http://localhost:5000/api/news/admin/all-temp')
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/admin/all-temp`)
       
       console.log('Response status:', response.status)
       
@@ -102,7 +102,7 @@ const NewsManagement = () => {
       console.log('Creating news with token:', token.substring(0, 20) + '...')
       console.log('Form data:', formData)
       
-      const response = await fetch('http://localhost:5000/api/news', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ const NewsManagement = () => {
         return
       }
       
-      const response = await fetch(`http://localhost:5000/api/news/${selectedNews.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/${selectedNews.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ const NewsManagement = () => {
         return
       }
       
-      const response = await fetch(`http://localhost:5000/api/news/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -206,7 +206,7 @@ const NewsManagement = () => {
         return
       }
       
-      const response = await fetch(`http://localhost:5000/api/news/${newsItem.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/${newsItem.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

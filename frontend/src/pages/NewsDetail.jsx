@@ -20,7 +20,7 @@ const NewsDetail = () => {
       setLoading(true)
       setError(null)
       
-      const response = await fetch(`http://localhost:5000/api/news/${slug}`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/${slug}`)
       
       if (!response.ok) {
         throw new Error('Article not found')
@@ -45,7 +45,7 @@ const NewsDetail = () => {
 
   const fetchRelatedNews = async (category) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/news?category=${category}&limit=3`)
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news?category=${category}&limit=3`)
       const data = await response.json()
       
       if (data.success) {

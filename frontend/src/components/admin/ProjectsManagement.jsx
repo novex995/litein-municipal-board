@@ -52,7 +52,7 @@ const ProjectsManagement = () => {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('http://localhost:5000/api/projects')
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects`)
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -132,7 +132,7 @@ const ProjectsManagement = () => {
 
       console.log('📤 Sending project data to API...')
       
-      const response = await fetch('http://localhost:5000/api/projects', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const ProjectsManagement = () => {
         return
       }
       
-      const response = await fetch(`http://localhost:5000/api/projects/${selectedProject.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/${selectedProject.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ const ProjectsManagement = () => {
         return
       }
       
-      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/projects/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
