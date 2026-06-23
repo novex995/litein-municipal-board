@@ -15,40 +15,45 @@ const Home = () => {
   const [news, setNews] = useState([])
   const [newsLoading, setNewsLoading] = useState(true)
 
-  // Fetch latest news
-  useEffect(() => {
-    const fetchNews = async () => {
-      try {
-        // TEMPORARY: Hardcoded URL until Cloudflare env variable is set
-        const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com'
-        
-        // Debug: Log the API URL being used
-        console.log('🔧 API URL:', API_URL)
-        console.log('🔧 Full endpoint:', `${API_URL}/api/news?limit=3`)
-        
-        const response = await fetch(`${API_URL}/api/news?limit=3`)
-        const data = await response.json()
-        if (data.success) {
-          setNews(data.data)
-        }
-      } catch (error) {
-        console.error('Error fetching news:', error)
-      } finally {
-        setNewsLoading(false)
+// Fetch latest news
+useEffect(() => {
+  const fetchNews = async () => {
+    try {
+      // Clean up variable fallbacks
+      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com';
+      
+      // Ensure no trailing slash exists at the end of the base URL string
+      if (API_URL.endsWith('/')) {
+        API_URL = API_URL.slice(0, -1);
       }
+      
+      const response = await fetch(`${API_URL}/api/news?limit=3`);
+      const data = await response.json();
+      if (data.success) {
+        setNews(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+    } finally {
+      setNewsLoading(false);
     }
-    fetchNews()
-  }, [])
-
-  const handleNewsletterSubmit = async (e) => {
+  }
+  fetchNews();
+}, [])
+const handleNewsletterSubmit = async (e) => {
     e.preventDefault()
     setNewsletterLoading(true)
     setNewsletterMessage({ type: '', text: '' })
 
     try {
-      // TEMPORARY: Hardcoded URL until Cloudflare env variable is set
-      const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com'
+      // 1. Sanitize the API URL base path identically to fetchNews
+      let API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com';
       
+      if (API_URL.endsWith('/')) {
+        API_URL = API_URL.slice(0, -1);
+      }
+      
+      // 2. Fire the sanitized POST request
       const response = await fetch(`${API_URL}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
