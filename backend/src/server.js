@@ -15,7 +15,6 @@ import newsletterRoutes from './routes/newsletter.js'
 import newsRoutes from './routes/news.js'
 import usersRoutes from './routes/users.js'
 import activityLogRoutes from './routes/activityLog.js'
-import settingsRoutes from './routes/settings.js'
 
 // Load environment variables
 dotenv.config()
@@ -28,7 +27,9 @@ app.use(helmet())
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: ['https://litein-municipal.pages.dev', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 }))
 
@@ -106,7 +107,6 @@ app.use('/api/newsletter', newsletterRoutes)
 app.use('/api/news', newsRoutes)
 app.use('/api/users', usersRoutes)
 app.use('/api/activity-logs', activityLogRoutes)
-app.use('/api/settings', settingsRoutes)
 
 // 404 handler
 app.use((req, res) => {
