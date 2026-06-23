@@ -1,14 +1,14 @@
 {
-  "name": "litein-municipal-board",
+  "name": "litein-municipal-board-monorepo",
   "version": "1.0.0",
-  "description": "Litein Municipal Board - Full Stack Application",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "start": "node server.js",
-    "backend": "cd backend && npm start",
-    "frontend": "cd frontend && npm run dev"
-  },
-  "keywords": ["municipal", "kenya", "kericho"],
-  "author": "Litein Municipality",
-  "license": "MIT"
+    "start": "cd backend && npm start",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install"
+  }
 }
