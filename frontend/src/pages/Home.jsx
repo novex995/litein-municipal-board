@@ -19,6 +19,10 @@ const Home = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        // Debug: Log the API URL being used
+        console.log('🔧 API URL:', import.meta.env.VITE_API_URL || 'http://localhost:5000')
+        console.log('🔧 Full endpoint:', `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news?limit=3`)
+        
         const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news?limit=3`)
         const data = await response.json()
         if (data.success) {
