@@ -19,11 +19,14 @@ const Home = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        // Debug: Log the API URL being used
-        console.log('🔧 API URL:', import.meta.env.VITE_API_URL || 'http://localhost:5000')
-        console.log('🔧 Full endpoint:', `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news?limit=3`)
+        // TEMPORARY: Hardcoded URL until Cloudflare env variable is set
+        const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com'
         
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news?limit=3`)
+        // Debug: Log the API URL being used
+        console.log('🔧 API URL:', API_URL)
+        console.log('🔧 Full endpoint:', `${API_URL}/api/news?limit=3`)
+        
+        const response = await fetch(`${API_URL}/api/news?limit=3`)
         const data = await response.json()
         if (data.success) {
           setNews(data.data)
@@ -43,7 +46,10 @@ const Home = () => {
     setNewsletterMessage({ type: '', text: '' })
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/newsletter/subscribe`, {
+      // TEMPORARY: Hardcoded URL until Cloudflare env variable is set
+      const API_URL = import.meta.env.VITE_API_URL || 'https://litein-municipal.onrender.com'
+      
+      const response = await fetch(`${API_URL}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: newsletterEmail })
