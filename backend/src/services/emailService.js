@@ -1,25 +1,42 @@
 import nodemailer from 'nodemailer'
 
 /**
- * Create Gmail SMTP transporter
+ * Create Brevo (formerly Sendinblue) SMTP transporter
  */
 const createTransporter = () => {
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    console.error('Gmail credentials not configured')
-    throw new Error('Gmail credentials not configured. Please set GMAIL_USER and GMAIL_APP_PASSWORD in .env')
+  // Check if Brevo credentials are configured
+  if (process.env.BREVO_API_KEY && process.env.BREVO_EMAIL_FROM) {
+    console.log('✓ Using Brevo SMTP for email sending')
+    return nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      secure: false, // Use TLS
+      auth: {
+        user: process.env.BREVO_EMAIL_FROM,
+        pass: process.env.BREVO_API_KEY
+      }
+    })
   }
-
-  return nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD
-    }
-  })
+  
+  // Fallback to Gmail if Brevo not configured (for backwards compatibility)
+  if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+    console.log('⚠️ Using Gmail SMTP (Brevo recommended for production)')
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD
+      }
+    })
+  }
+  
+  // No email service configured
+  console.error('❌ No email service configured')
+  throw new Error('Email credentials not configured. Please set BREVO_API_KEY and BREVO_EMAIL_FROM (recommended) or GMAIL_USER and GMAIL_APP_PASSWORD in .env')
 }
 
 /**
- * Send an email using Gmail SMTP
+ * Send an email using SMTP (Brevo or Gmail)
  * @param {Object} params - Email parameters
  * @param {string} params.to - Recipient email address
  * @param {string} params.subject - Email subject
@@ -40,7 +57,7 @@ export const sendEmail = async (params) => {
       text,
       cc = null,
       bcc = null,
-      from = process.env.GMAIL_USER,
+      from = process.env.BREVO_EMAIL_FROM || process.env.GMAIL_USER,
       fromName = 'Litein Municipal Board'
     } = params
 
@@ -73,12 +90,14 @@ export const sendEmail = async (params) => {
     }
 
     // Send email
+    console.log(`📧 Sending email to: ${to}, Subject: "${subject}"`)
     const info = await transporter.sendMail(mailOptions)
 
     console.log('✓ Email sent successfully:', {
       messageId: info.messageId,
       to: to,
-      subject: subject
+      subject: subject,
+      provider: process.env.BREVO_API_KEY ? 'Brevo' : 'Gmail'
     })
 
     return {
