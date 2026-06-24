@@ -1,0 +1,81 @@
+========================================
+QUICK FIX: News Article Update Failed
+========================================
+
+MOST LIKELY CAUSE: Permission Denied
+------------------------------------
+
+WHO CAN EDIT ARTICLES?
+✅ The person who created the article (author)
+✅ Municipal Manager (role: municipal_manager)
+✅ Super Admin (role: super_admin)
+❌ Other staff members CANNOT edit articles they didn't create
+
+HOW TO FIX:
+-----------
+
+Option 1: LOG IN AS THE ARTICLE'S AUTHOR
+- Find out who created the article
+- Log in with that user's account
+- Try updating again
+
+Option 2: MAKE YOUR USER AN ADMIN
+1. Go to Supabase: https://supabase.com/dashboard
+2. Select project: kgbplquapfidrwnhtdnq
+3. Go to SQL Editor
+4. Run this query:
+
+UPDATE users 
+SET role = 'municipal_manager' 
+WHERE email = 'YOUR_EMAIL@example.com';
+
+5. Log out and log in again
+6. Try updating the article
+
+Option 3: CHECK WHO CREATED THE ARTICLE
+1. Go to Supabase → Table Editor → news table
+2. Find the article
+3. Look at the 'author_id' column
+4. Go to users table
+5. Find the user with that ID
+6. Log in with that user's credentials
+
+DEBUGGING STEPS:
+---------------
+
+1. Open browser (F12) → Console tab
+2. Try to update the article
+3. Look for logs showing:
+   - Response status (403 = permission denied)
+   - Error message
+   - User role vs article author
+
+4. Check Railway logs:
+   - Go to Railway dashboard
+   - Click backend project
+   - View deployment logs
+   - Look for permission check logs
+
+NEW FEATURES ADDED:
+------------------
+✅ Detailed error logging in browser console
+✅ Backend logs show exact permission check
+✅ Error messages now include specific reason
+
+AFTER CHANGES ARE DEPLOYED:
+--------------------------
+The error messages will be more specific:
+- "You do not have permission to edit this article"
+- "News article not found"
+- "Authentication required. Please log in again."
+
+CHECK YOUR ROLE:
+---------------
+Your current role determines what you can edit:
+- citizen → Cannot edit any news
+- municipal_staff → Only your own articles
+- department_head → Only your own articles
+- municipal_manager → ALL articles ✅
+- super_admin → ALL articles ✅
+
+========================================

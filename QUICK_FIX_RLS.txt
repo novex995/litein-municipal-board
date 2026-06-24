@@ -1,0 +1,47 @@
+========================================
+QUICK FIX: Projects & News RLS Error
+========================================
+
+PROBLEM:
+"new row violates row-level security policy"
+Cannot create or update projects/news
+
+CAUSE:
+Missing RLS policies for INSERT/UPDATE operations
+
+SOLUTION (5 minutes):
+---------------------
+
+1. Open Supabase:
+   https://supabase.com/dashboard
+   → Select project: kgbplquapfidrwnhtdnq
+   → SQL Editor → New query
+
+2. Copy the SQL script from:
+   database/fix_all_admin_tables_rls.sql
+
+3. Paste into SQL Editor
+
+4. Click Run (or Ctrl+Enter)
+
+5. Wait for success message
+
+6. Test in admin dashboard:
+   - Create new project ✅
+   - Update news article ✅
+   - Both should work!
+
+WHAT IT FIXES:
+--------------
+✅ Projects table (INSERT, UPDATE, DELETE)
+✅ News table (INSERT, UPDATE, DELETE)  
+✅ Project Images (INSERT, UPDATE, DELETE)
+✅ Project Updates (INSERT, UPDATE, DELETE)
+
+NO CODE CHANGES NEEDED!
+Just run SQL in Supabase and it works immediately.
+
+DETAILED GUIDE:
+See FIX_RLS_POLICIES_GUIDE.md
+
+========================================
