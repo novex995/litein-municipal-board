@@ -211,28 +211,47 @@ export const updateNews = async (req, res) => {
       published
     } = req.body
 
+    console.log('📝 Update news request:', {
+      id,
+      userId: req.user?.id,
+      userRole: req.user?.role,
+      updates: { title, content: content?.substring(0, 50) + '...', category, published }
+    })
+
     const userId = req.user.id
     const userRole = req.user.role
 
     // Check if news exists
     const { data: existingNews, error: fetchError } = await supabaseAdmin
       .from('news')
-      .select('author_id')
+      .select('author_id, title')
       .eq('id', id)
       .single()
 
     if (fetchError || !existingNews) {
+      console.error('❌ News article not found:', id, fetchError)
       return res.status(404).json({
         success: false,
         error: 'News article not found'
       })
     }
 
+    console.log('✓ Found article:', existingNews.title, 'Author:', existingNews.author_id)
+
     // Check permissions
     const isAdmin = ['super_admin', 'municipal_manager'].includes(userRole)
     const isAuthor = existingNews.author_id === userId
 
+    console.log('🔐 Permission check:', {
+      userRole,
+      isAdmin,
+      isAuthor,
+      articleAuthor: existingNews.author_id,
+      currentUser: userId
+    })
+
     if (!isAdmin && !isAuthor) {
+      console.error('❌ Permission denied: User not author or admin')
       return res.status(403).json({
         success: false,
         error: 'You do not have permission to edit this article'
@@ -260,6 +279,8 @@ export const updateNews = async (req, res) => {
       })
     }
 
+    console.log('📤 Updating article with data:', Object.keys(updateData))
+
     const { data, error } = await supabaseAdmin
       .from('news')
       .update(updateData)
@@ -268,12 +289,14 @@ export const updateNews = async (req, res) => {
       .single()
 
     if (error) {
-      console.error('Error updating news:', error)
+      console.error('❌ Supabase update error:', error)
       return res.status(500).json({
         success: false,
-        error: 'Failed to update news article'
+        error: 'Failed to update news article: ' + error.message
       })
     }
+
+    console.log('✅ Article updated successfully:', data.title)
 
     return res.json({
       success: true,

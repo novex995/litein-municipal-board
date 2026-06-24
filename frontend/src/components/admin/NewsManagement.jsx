@@ -140,6 +140,11 @@ const NewsManagement = () => {
         return
       }
       
+      console.log('🔄 Updating news article:', {
+        id: selectedNews.id,
+        formData: formData
+      })
+      
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/news/${selectedNews.id}`, {
         method: 'PUT',
         headers: {
@@ -149,18 +154,23 @@ const NewsManagement = () => {
         body: JSON.stringify(formData)
       })
       
+      console.log('📡 Response status:', response.status)
+      
       const data = await response.json()
+      console.log('📦 Response data:', data)
+      
       if (data.success) {
         alert('News article updated successfully!')
         setShowEditModal(false)
         resetForm()
         fetchNews()
       } else {
-        alert('Failed to update news article: ' + data.error)
+        alert('Failed to update news article: ' + (data.error || 'Unknown error'))
+        console.error('❌ Update failed:', data)
       }
     } catch (error) {
-      console.error('Error updating news:', error)
-      alert('Failed to update news article')
+      console.error('❌ Error updating news:', error)
+      alert('Failed to update news article: ' + error.message)
     }
   }
 
